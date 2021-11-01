@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.18)
 
 project(UnifiedMemoryGroupAllocation LANGUAGES CUDA CXX)
 
+option(USING_CONAN "Set if building through the conan script" OFF)
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
@@ -38,27 +40,21 @@ add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 enable_testing()
 
 add_library(allocator INTERFACE)
-target_include_directories(allocator INTERFACE include)
+target_include_directories(allocator INTERFACE 
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 
 add_subdirectory(test)
 
-set(TARGETLIST allocator)
 
-install(TARGETS ${TARGETLIST}
+install(TARGETS allocator
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
-        INCLUDES DESTINATION include
-        )
+        INCLUDES DESTINATION include)
 
-set(CPACK_PACKAGE_VENDOR "dePaul Miller et. al.")
-SET(CPACK_GENERATOR "DEB")
-SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "dePaul Miller")
-set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
-set(CPACK_SOURCE_IGNORE_FILES
-        /.git
-        /dist
-        /.*build.*
-        /\\\\.DS_Store
-        )
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)
+
+set(CPACK_GENERATOR "ZIP")
+set(CPACK_PACKAGE_NAME "UMGroupAllocation")
 include(CPack)
