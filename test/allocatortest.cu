@@ -1,7 +1,7 @@
 #include <iostream>
 #include <functional>
 #include <groupallocator>
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 TEST(GroupAllocator_test, TestForACrash) {
     groupallocator::Context ctx;

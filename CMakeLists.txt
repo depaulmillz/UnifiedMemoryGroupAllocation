@@ -1,41 +1,40 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.18)
 
 project(UnifiedMemoryGroupAllocation LANGUAGES CUDA CXX)
 
-set(CXX_STANDARD 14)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
 
-message("BUILD TYPE: ${CMAKE_BUILD_TYPE}")
+include(cmake/config.cmake)
 
-include(GoogleTest)
+check_cuda_version(11.0 11.5)
 
-add_subdirectory(googletest)
+set_consistent_standard(11)
+setup_conan()
+
+foreach(LIB in ${CONAN_LIBS})
+    message(STATUS ${LIB})
+endforeach()
+
+
+if(NOT CMAKE_CUDA_ARCHITECTURES)
+    set(CMAKE_CUDA_ARCHITECTURES "70;75")
+    message(STATUS "Setting CUDA ARCHITECTURES to ${CMAKE_CUDA_ARCHITECTURES}")
+endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     string(APPEND CMAKE_CUDA_FLAGS " -G -pg")
-    message("CUDA FLAGS: ${CMAKE_CUDA_FLAGS}")
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 if (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     string(APPEND CMAKE_CUDA_FLAGS " -lineinfo -pg")
-    message("CUDA FLAGS: ${CMAKE_CUDA_FLAGS}")
 endif (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
 
-if (NOT DEFINED CUDA_ARCH)
-    set(CUDA_ARCH "60" "61" "70" "75")
-    message("WARNING CUDA_ARCH IS GENERATING DEFAULT ${CUDA_ARCH}")
-endif (NOT DEFINED CUDA_ARCH)
-
-string(APPEND CMAKE_CUDA_FLAGS " --expt-extended-lambda -Xptxas=-v")
-
-foreach (ARCH_ELM ${CUDA_ARCH})
-    message("${ARCH_ELM}")
-    string(APPEND CMAKE_CUDA_FLAGS " -gencode arch=compute_${ARCH_ELM},code=sm_${ARCH_ELM}")
-endforeach (ARCH_ELM)
-
-add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUGALLOC>")
-
+string(APPEND CMAKE_CUDA_FLAGS " -Xptxas=-v")
 string(APPEND CMAKE_CUDA_FLAGS " -Wreorder")
 
+add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 enable_testing()
 
 add_library(allocator INTERFACE)
