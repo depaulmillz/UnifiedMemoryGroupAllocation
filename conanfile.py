@@ -3,9 +3,17 @@ from conans import ConanFile, CMake
 class UnifiedMemoryGroupAllocationConan(ConanFile):
     name = "unifiedmemorygroupallocation"
     version = "1.0"
+    author = "dePaul Miller"
+    url = "https://github.com/depaulmillz/UnifiedMemoryGroupAllocation"
+    license = "MIT"
     settings="os", "compiler", "build_type", "arch"
-    requires="gtest/1.10.0"
+    build_requires="gtest/1.10.0"
     generators="cmake"
+    description = """The Unified Memory Group Allocator was designed in the paper
+    "KVCG: A Heterogeneous Key-Value Store for Skewed Workloads" by dePaul Miller, 
+    Jacob Nelson, Ahmed Hassan, and Roberto Palmieri." It allows for allocating
+    Unified Memory with extra metadata to limit thrashing."""
+    topic = ("unified memory", "gpu programming", "allocator")
     
     exports_sources = "CMakeLists.txt", "cmake/*", "include/*", "test/*", "LICENSE"
     
