@@ -1,15 +1,14 @@
 from conans import ConanFile, CMake
 
 class UnifiedMemoryGroupAllocationConan(ConanFile):
-    name = "UMGroupAllocation"
+    name = "unifiedmemorygroupallocation"
     version = "1.0"
     settings="os", "compiler", "build_type", "arch"
     requires="gtest/1.10.0"
     generators="cmake"
     
-    exports_sources = "CMakeLists.txt", "cmake/*", "include/*", "test/*"
+    exports_sources = "CMakeLists.txt", "cmake/*", "include/*", "test/*", "LICENSE"
     
-
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["USING_CONAN"] = "ON"
@@ -25,6 +24,9 @@ class UnifiedMemoryGroupAllocationConan(ConanFile):
         cmake = self._configure_cmake()
         cmake.install()
 
-    def package_info(self):
-        self.cpp_info.libs = ["UMGroupAllocation"]
+    def package_id(self):
         self.info.header_only()
+
+    def package_info(self):
+        self.cpp_info.names["cmake_find_package"] = "UnifiedMemoryGroupAllocation"
+        self.cpp_info.names["cmake_find_package_multi"] = "UnifiedMemoryGroupAllocation"
