@@ -15,10 +15,9 @@ check_cuda_version(11.0 11.5)
 set_consistent_standard(11)
 setup_conan()
 
-foreach(LIB in ${CONAN_LIBS})
-    message(STATUS ${LIB})
+foreach(LIB ${CONAN_LIBS})
+    message(STATUS "Using library ${LIB}")
 endforeach()
-
 
 if(NOT CMAKE_CUDA_ARCHITECTURES)
     set(CMAKE_CUDA_ARCHITECTURES "70;75")
@@ -37,6 +36,14 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xptxas=-v")
 string(APPEND CMAKE_CUDA_FLAGS " -Wreorder")
 
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
+
+foreach(ARCH "${CMAKE_CUDA_ARCHITECTURES}")
+    if("${ARCH}" MATCHES "^5.$")
+        add_compile_options("-DDISABLE_PREFETCH")
+        break()
+    endif()
+endforeach()
+
 enable_testing()
 
 add_library(allocator INTERFACE)

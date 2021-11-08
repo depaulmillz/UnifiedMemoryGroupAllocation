@@ -14,12 +14,18 @@ class UnifiedMemoryGroupAllocationConan(ConanFile):
     Jacob Nelson, Ahmed Hassan, and Roberto Palmieri." It allows for allocating
     Unified Memory with extra metadata to limit thrashing."""
     topic = ("unified memory", "gpu programming", "allocator")
-    
+ 
+    options = {"cuda_arch" : "ANY"}
     exports_sources = "CMakeLists.txt", "cmake/*", "include/*", "test/*", "LICENSE"
     
+    def configure(self):
+        if self.options.cuda_arch == None:
+            self.options.cuda_arch = '70;75'
+
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["USING_CONAN"] = "ON"
+        cmake.definitions["CMAKE_CUDA_ARCHITECTURES"] = self.options.cuda_arch
         cmake.configure()
         return cmake
 

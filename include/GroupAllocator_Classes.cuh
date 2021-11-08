@@ -77,7 +77,9 @@ namespace groupallocator {
         }
 
         void moveToDevice(int device, cudaStream_t stream) {
+            #ifndef DISABLE_PREFETCH
             gpuAssert(cudaMemPrefetchAsync(mem, PAGE_SIZE, device, stream), __FILE__, __LINE__);
+            #endif
         }
 
         size_t getPages() { return 1; }
@@ -149,11 +151,13 @@ namespace groupallocator {
         }
 
         void moveToDevice(int device, cudaStream_t stream) {
+            #ifndef DISABLE_PREFETCH
             m.lock();
             for (auto i = mem.begin(); i != mem.end(); i++) {
                 gpuAssert(cudaMemPrefetchAsync(i->first, i->second, device, stream), __FILE__, __LINE__);
             }
             m.unlock();
+            #endif
         }
 
         size_t getPages() {

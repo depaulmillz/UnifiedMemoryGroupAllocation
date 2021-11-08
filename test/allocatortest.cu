@@ -77,3 +77,16 @@ TEST(GroupAllocator_test, IPADoesntAllocateSamePtr) {
     }
     g.freeall();
 }
+
+TEST(GroupAllocator_test, MoveToGPU) {
+    groupallocator::GroupAllocator g(0, 128);
+
+    int *j, *k;
+    g.allocate(&j, sizeof(int), false);
+    g.moveToDevice(0, 0x0);
+
+    g.allocate(&k, sizeof(char) * 4096, false);
+    g.moveToDevice(0, 0x0);
+
+    g.freeall();
+}
