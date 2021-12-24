@@ -1,6 +1,6 @@
 #include <iostream>
 #include <functional>
-#include <groupallocator>
+#include <GroupAllocator/groupallocator>
 #include <gtest/gtest.h>
 
 TEST(GroupAllocator_test, TestForACrash) {

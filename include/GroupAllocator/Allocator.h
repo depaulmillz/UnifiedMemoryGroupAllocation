@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "GroupAllocator_Classes.cuh"
+#include "GroupAllocator.h"
 
 namespace groupallocator {
 
@@ -24,11 +24,11 @@ namespace groupallocator {
         /**
          * Create context
          */
-        Context() {}
+        Context() = default;
         /**
          * Delete context
          */
-        ~Context() {}
+        ~Context() = default;
         /**
          * Size of pages to use
          */
@@ -76,7 +76,7 @@ namespace groupallocator {
      * Cleans up the allocator by freeing everything so there is no memory leak.
      * Thread safe.
      */
-    void freeall() {
+    inline void freeall() {
         groupMapMutex.lock();
         for (std::pair<const int, std::shared_ptr < groupallocator::GroupAllocator>>
             &elm : allocator) {
@@ -91,7 +91,7 @@ namespace groupallocator {
      * @param gpuID
      * @param stream
      */
-    void moveToGPU(int group = -1, int gpuID = 0, cudaStream_t stream = cudaStreamDefault){
+    inline void moveToGPU(int group = -1, int gpuID = 0, cudaStream_t stream = cudaStreamDefault){
         groupMapMutex.lock();
         std::shared_ptr <GroupAllocator> g = allocator[group];
         groupMapMutex.unlock();
@@ -107,7 +107,7 @@ namespace groupallocator {
      * @param group
      * @param stream
      */
-    void moveToCPU(int group = -1, cudaStream_t stream = cudaStreamDefault){
+    inline void moveToCPU(int group = -1, cudaStream_t stream = cudaStreamDefault){
         groupMapMutex.lock();
         std::shared_ptr <GroupAllocator> g = allocator[group];
         groupMapMutex.unlock();

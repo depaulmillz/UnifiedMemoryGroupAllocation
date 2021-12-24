@@ -2,7 +2,7 @@ from conans import ConanFile, CMake
 
 class UnifiedMemoryGroupAllocationConan(ConanFile):
     name = "unifiedmemorygroupallocation"
-    version = "1.0"
+    version = "1.1"
     author = "dePaul Miller"
     url = "https://github.com/depaulmillz/UnifiedMemoryGroupAllocation"
     license = "MIT"
@@ -15,16 +15,20 @@ class UnifiedMemoryGroupAllocationConan(ConanFile):
     Unified Memory with extra metadata to limit thrashing."""
     topic = ("unified memory", "gpu programming", "allocator")
  
-    options = {"cuda_arch" : "ANY"}
+    options = {"cuda_arch" : "ANY", "cuda_compiler" : "ANY"}
     exports_sources = "CMakeLists.txt", "cmake/*", "include/*", "test/*", "LICENSE"
     
     def configure(self):
         if self.options.cuda_arch == None:
             self.options.cuda_arch = '70;75'
+        if self.options.cuda_compiler == None:
+            self.options.cuda_compiler = "nvcc"
 
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["USING_CONAN"] = "ON"
+        cmake.definitions["CMAKE_CUDA_COMPILER"] = str(self.options.cuda_compiler)
+        cmake.definitions["CMAKE_EXPORT_COMPILE_COMMANDS"] = "ON"
         cmake.definitions["CMAKE_CUDA_ARCHITECTURES"] = self.options.cuda_arch
         cmake.configure()
         return cmake

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(UnifiedMemoryGroupAllocation LANGUAGES CUDA CXX)
+project(UnifiedMemoryGroupAllocation LANGUAGES CXX)
 
 option(USING_CONAN "Set if building through the conan script" OFF)
 
@@ -9,6 +9,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 include(cmake/config.cmake)
+
+find_package(CUDAToolkit REQUIRED)
 
 check_cuda_version(11.0 11.5)
 
@@ -50,9 +52,11 @@ add_library(allocator INTERFACE)
 target_include_directories(allocator INTERFACE 
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
+target_link_libraries(allocator INTERFACE CUDA::cudart)
 
 add_subdirectory(test)
 
+## Installation
 
 install(TARGETS allocator
         LIBRARY DESTINATION lib

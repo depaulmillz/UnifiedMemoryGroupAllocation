@@ -1,31 +1,27 @@
-#ifndef LISTALLOCATOR_HH
-#define LISTALLOCATOR_HH
+#include <list>
 
-#include <iostream>
+#pragma once
 
 namespace groupallocator {
 
-/**
- * Gets padding of a type
- */
-    size_t getPadding(size_t startingptr, size_t alignment) {
+    /**
+     * Gets padding of a type
+     */
+    inline size_t getPadding(size_t startingptr, size_t alignment) {
         size_t multiplier = startingptr / alignment + 1;
         size_t padding = multiplier * alignment - startingptr;
         return padding;
     }
-
-// when allocating
-// write pointer to next
-// then have the data
-
-    struct MallocData {
-        size_t size;
-        size_t used;
-        void* start;
-    };
-
-// not thread safe and no compaction
+       
+    /// not thread safe and no compaction
     class ListAllocator {
+    private:
+        struct MallocData {
+            size_t size;
+            size_t used;
+            void* start;
+        };
+
     public:
         // s needs to be larger than 2 MallocData
         ListAllocator(void *p, size_t s) : ptr(p), size(s) {
@@ -35,9 +31,9 @@ namespace groupallocator {
 
         ListAllocator() : ptr(nullptr), size(0) {}
 
-        // allocates data in a free area or sets p to nullptr
+        /// allocates data in a free area or sets p to nullptr
         template<typename T>
-        void alloc(T **p, size_t s, bool forceAligned128) {
+        inline void alloc(T **p, size_t s, bool forceAligned128) {
             size_t alignment = forceAligned128 ? 128 : std::alignment_of<T *>();
 
             for(auto iter = l.begin(); iter != l.end(); ++iter) {
@@ -62,9 +58,9 @@ namespace groupallocator {
             *p = nullptr;
         }
 
-        // right now there is no compaction
+        /// right now there is no compaction
         template<typename T>
-        void free(T *p) {
+        inline void free(T *p) {
             for(auto & iter : l){
                 if((size_t)iter.start == (size_t)p){
                     iter.used = 0;
@@ -80,4 +76,3 @@ namespace groupallocator {
 
     };
 }  // namespace groupallocator
-#endif
