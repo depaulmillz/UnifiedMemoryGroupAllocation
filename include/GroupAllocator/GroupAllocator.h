@@ -42,6 +42,8 @@ namespace groupallocator {
                 delete e;
             }
             delete mpa;
+            ipas = std::vector<InPageAllocator *>{};
+            mpa = nullptr;
         }
 
         /**

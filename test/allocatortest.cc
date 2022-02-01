@@ -26,6 +26,7 @@ TEST(GroupAllocator_test, TestForACrash) {
     groupallocator::free(t);
 
     groupallocator::freeall();
+    groupallocator::freeall();
 }
 
 TEST(GroupAllocator_test, TooSmallAllocateInMPA) {
@@ -90,3 +91,4 @@ TEST(GroupAllocator_test, MoveToGPU) {
 
     g.freeall();
 }
+
