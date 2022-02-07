@@ -12,7 +12,7 @@ include(cmake/config.cmake)
 
 find_package(CUDAToolkit REQUIRED)
 
-check_cuda_version(11.0 11.5)
+check_cuda_version(11.0 11.6)
 
 set_consistent_standard(11)
 setup_conan()
