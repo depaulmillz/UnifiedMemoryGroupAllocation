@@ -20,7 +20,7 @@ class UnifiedMemoryGroupAllocationConan(ConanFile):
     
     def configure(self):
         if self.options.cuda_arch == None:
-            self.options.cuda_arch = '70;75'
+            self.options.cuda_arch = '70;75;80;86'
         if self.options.cuda_compiler == None:
             self.options.cuda_compiler = "nvcc"
 
