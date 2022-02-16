@@ -10,11 +10,13 @@ endif()
 
 message(STATUS "Building in ${CMAKE_BUILD_TYPE} mode")
 
-include(cmake/config.cmake)
-
 find_package(CUDAToolkit REQUIRED)
 
-check_cuda_version(11.0 11.6)
+message(STATUS "${CUDAToolkit_FOUND} and ")
+
+include(cmake/config.cmake)
+
+check_cuda_version(11 12)
 
 set_consistent_standard(11)
 setup_conan()
