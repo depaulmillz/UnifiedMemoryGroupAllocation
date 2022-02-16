@@ -18,10 +18,10 @@ macro(SET_CONSISTENT_STANDARD STANDARD)
 endmacro()
 
 macro(SETUP_CONAN)
-    message(STATUS "Running conan install -s build_type=${CMAKE_BUILD_TYPE} ${CMAKE_SOURCE_DIR} -if ${CMAKE_BINARY_DIR} --build=missing")
     message(STATUS "USING ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} standard ${CMAKE_CXX_STANDARD}")
 
     if(NOT USING_CONAN)
+        message(STATUS "Running conan install -s build_type=${CMAKE_BUILD_TYPE} ${CMAKE_SOURCE_DIR} -if ${CMAKE_BINARY_DIR} --build=missing")
         execute_process(
             COMMAND conan install -s compiler.libcxx=libstdc++11 -s build_type=${CMAKE_BUILD_TYPE} ${CMAKE_SOURCE_DIR} -if ${CMAKE_BINARY_DIR} --build=missing
             RESULT_VARIABLE conan_code)

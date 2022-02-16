@@ -8,6 +8,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+message(STATUS "Building in ${CMAKE_BUILD_TYPE} mode")
+
 include(cmake/config.cmake)
 
 find_package(CUDAToolkit REQUIRED)

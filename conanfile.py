@@ -6,7 +6,7 @@ class UnifiedMemoryGroupAllocationConan(ConanFile):
     author = "dePaul Miller"
     url = "https://github.com/depaulmillz/UnifiedMemoryGroupAllocation"
     license = "MIT"
-    settings="os", "compiler", "build_type", "arch"
+    settings={"os" : ["Linux"], "compiler" : None, "build_type" : None, "arch": ["x86_64"] }
     build_requires="gtest/1.10.0"
     generators="cmake"
     description = """The Unified Memory Group Allocator was designed in the paper
