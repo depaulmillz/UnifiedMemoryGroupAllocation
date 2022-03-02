@@ -1,4 +1,5 @@
-/** @file GroupAllocator.cuh
+/** 
+ * @file
  * Allocation and deallocation functionality resides here.
  */
 #ifndef GALLOCATOR_HH
