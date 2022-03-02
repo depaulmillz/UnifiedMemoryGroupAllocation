@@ -1,3 +1,7 @@
+/**
+ * @file
+ */
+
 #include <cmath>
 #include <functional>
 #include <mutex>
