@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Unified Memory Group Allocator: Main Page</title>
+<title>Unified Memory Group Allocator: Unified Memory Group Allocation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -60,11 +60,36 @@ $(function() {
 </iframe>
 </div>
 
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Unified Memory Group Allocator Documentation</div>  </div>
+<div class="title">Unified Memory Group Allocation </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p>This is a memory allocator for CUDA Unified Memory.</p>
+<h2><a class="anchor" id="autotoc_md1"></a>
+OS and Hardware</h2>
+<p>Code is tested and developed on Ubuntu although it should be supported on any Linux distro that supports CUDA. The functionality of Unified Memory (UM) used is supported solely on Linux. The code works for Pascal or later, although Volta, sm_70, or later is ideal.</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Building</h2>
+<p>Requires CMake &gt;= 3.18, conan, and a CUDA version in 11.0 to 11.6.</p>
+<p>It is easiest to get conan through pip.</p>
+<p>Build and package by: </p><div class="fragment"><div class="line">mkdir build</div>
+<div class="line">cd build</div>
+<div class="line">conan install --build missing ..</div>
+<div class="line">conan create ..</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
+Code Organization</h2>
+<ul>
+<li>include/GroupAllocator contains the include files</li>
+<li>groupallocator will include everything needed to utilize the code</li>
+<li><a class="el" href="Allocator_8h_source.html">Allocator.h</a> includes a basic global allocator to allocate UM with groups</li>
+<li><a class="el" href="GroupAllocator_8h.html">GroupAllocator.h</a> contains the group allocator class to allocate groups</li>
+<li><a class="el" href="Helper_8h.html">Helper.h</a> contains assertion methods for making sure errors are handled</li>
+<li><a class="el" href="InPageAllocator_8h.html">InPageAllocator.h</a> allocator for allocating in pages</li>
+<li><a class="el" href="ListAllocator_8h.html">ListAllocator.h</a> thread safe list allocator that allocates with the list seperate from the memory used</li>
+<li><a class="el" href="MultiPageAllocator_8h.html">MultiPageAllocator.h</a> allocator for allocating across multiple pages </li>
+</ul>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
